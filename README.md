@@ -68,7 +68,7 @@ A full, hover-to-play tour lives on the landing page (`docs/index.html`).
 
 ```bash
 git clone https://github.com/Drstone0007/honeybadger-ai.git
-cd honeybadger
+cd honeybadger-ai
 cp .env.example .env
 docker compose up -d --build
 ```
@@ -79,7 +79,7 @@ docker compose up -d --build
 
 ```bash
 git clone https://github.com/Drstone0007/honeybadger-ai.git
-cd honeybadger
+cd honeybadger-ai
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -91,7 +91,7 @@ python -m uvicorn app:app --host 127.0.0.1 --port 7000
 
 ```bash
 git clone https://github.com/Drstone0007/honeybadger-ai.git
-cd honeybadger
+cd honeybadger-ai
 ./start-macos.sh
 ```
 
@@ -101,7 +101,7 @@ cd honeybadger
 
 ```powershell
 git clone https://github.com/Drstone0007/honeybadger-ai.git
-cd honeybadger
+cd honeybadger-ai
 powershell -ExecutionPolicy Bypass -File .\launch-windows.ps1
 ```
 
