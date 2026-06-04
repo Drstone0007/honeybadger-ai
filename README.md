@@ -57,7 +57,7 @@ A full, hover-to-play tour lives on the landing page (`docs/index.html`).
 ┌─────────────────────────────────────────────────────────────────┐
 │  INSTALLATION PROTOCOL                                         │
 ├─────────────────────────────────────────────────────────────────┤
-│  1. Clone repository                                           │
+│  1. Awesome repository                                           │
 │  2. Configure environment                                      │
 │  3. Launch kernel                                              │
 │  4. Access via localhost:7000                                  │
@@ -231,9 +231,9 @@ data/
               |    |    |   |||||||
              )_)  )_)  )_)   ~|~
             )___))___))___)\  |
-           )____)____)_____)\\|
-         _____|____|____|_____\\\__
-         \                       /
+          )Elite_Tech--Conglomerate )|
+         _tlmon____|____+|____|_____\\\__
+         \                             /
    ~^~^~~^~^~~^~^~~^~^~~^~^~~^~^~~^~^~~^~^~
            ~^~  ALL SYSTEMS GO  ~^~
    ~^~^~~^~^~~^~^~~^~^~~^~^~~^~^~~^~^~~^~^~
