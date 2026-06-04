@@ -67,7 +67,7 @@ A full, hover-to-play tour lives on the landing page (`docs/index.html`).
 ### Docker (Recommended)
 
 ```bash
-git clone https://github.com/honeybadger-ai/honeybadger.git
+git clone https://github.com/Drstone0007/honeybadger-ai.git
 cd honeybadger
 cp .env.example .env
 docker compose up -d --build
@@ -78,7 +78,7 @@ docker compose up -d --build
 ### Native Linux / macOS
 
 ```bash
-git clone https://github.com/honeybadger-ai/honeybadger.git
+git clone https://github.com/Drstone0007/honeybadger-ai.git
 cd honeybadger
 python3 -m venv venv
 source venv/bin/activate
@@ -90,7 +90,7 @@ python -m uvicorn app:app --host 127.0.0.1 --port 7000
 ### Apple Silicon
 
 ```bash
-git clone https://github.com/honeybadger-ai/honeybadger.git
+git clone https://github.com/Drstone0007/honeybadger-ai.git
 cd honeybadger
 ./start-macos.sh
 ```
@@ -100,7 +100,7 @@ cd honeybadger
 ### Windows
 
 ```powershell
-git clone https://github.com/honeybadger-ai/honeybadger.git
+git clone https://github.com/Drstone0007/honeybadger-ai.git
 cd honeybadger
 powershell -ExecutionPolicy Bypass -File .\launch-windows.ps1
 ```
