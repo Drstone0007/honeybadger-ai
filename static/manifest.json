@@ -1,6 +1,6 @@
 {
-  "name": "Odysseus",
-  "short_name": "Odysseus",
+  "name": "Honey Badger",
+  "short_name": "Honey Badger",
   "description": "Self-hosted AI chat with memory, documents, and tools",
   "start_url": "/",
   "scope": "/",
