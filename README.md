@@ -29,6 +29,16 @@ Local-first. Privacy-first. No cloud dependency. Your hardware, your data, your 
 │  [NOTES]     Task Manager       │  Cron · Reminders · Ntfy     │
 │  [CALENDAR]  Time Management    │  CalDAV · .ics · Multi-cal   │
 │  [MOBILE]    Responsive UI      │  PWA · Touch · Installable   │
+├─────────────────────────────────────────────────────────────────┤
+│  v2 NEW MODULES                                                │
+├─────────────────────────────────────────────────────────────────┤
+│  [BRAIN]     Second Brain       │  Karpaty · Knowledge Graph   │
+│  [OBSIDIAN]  Vault Integration  │  Wikilinks · Backlinks       │
+│  [PIXEL]     Vision Agent       │  Screenshot · OCR · UI       │
+│  [SWARM]     Mirofish Swarm     │  Multi-Agent · Parallel      │
+│  [GIT]       Git Intelligence   │  Blame · History · Commit    │
+│  [METALAND]  The World Inside   │  Orbs · Cinema · The Void    │
+│  [IWAS]      Voice Agent        │  OpenClaw · Preexistentism   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,6 +61,21 @@ A full, hover-to-play tour lives on the landing page (`docs/index.html`).
 
 </details>
 
+## QUICK START
+
+**One command. Everything. Zero questions.**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Drstone0007/honeybadger-ai/main/install.sh | bash
+```
+
+Or for a local repo checkout:
+
+```bash
+bash install.sh
+```
+
+Installs: Core chat + 6 provider models · Second Brain · Pixel Agent · Seeing Agent (vision + talk) · Mirofish Swarm (8 agents) · Git Agent · Obsidian Vault · Metaland + The Void · IWAS Voice Agent · TTS (Edge/Kokoro/ElevenLabs) · STT (Whisper/Deepgram/Google/ElevenLabs) · LiteRT-LM (on-device LLM) · Document processing.
 ## DEPLOYMENT
 
 ```

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Gateway · IWAS · Config</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#0a0705;--paper:#f5f0e8;--amber:#c8842a;--amber2:#e8a84a;--amber-d:rgba(200,132,42,.18);--amber-g:rgba(200,132,42,.07);--sage:#2d4a3e;--sage2:#4a7c6b;--rust:#8b3a1a;--tx:#f5f0e8;--txd:#c8bdb4;--txm:#6b5e52;--mono:'JetBrains Mono',monospace;--disp:'Fraunces',serif;--ui:'Outfit',sans-serif;--r:8px;--glass:rgba(250,245,238,.06);--glass2:rgba(250,245,238,.11);--br:rgba(200,189,180,.12);--br2:rgba(200,189,180,.22);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--ink);color:var(--tx);font-family:var(--ui);padding:2rem;}
+h1{font-family:var(--disp);font-size:1.6rem;font-weight:300;font-style:italic;color:var(--amber2);margin-bottom:.25rem;}
+h1 em{color:var(--tx);font-style:italic;}
+h1 strong{font-weight:700;font-style:normal;}
+.sub{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;color:var(--txm);margin-bottom:2rem;}
+.card{background:rgba(20,16,12,.92);border:1px solid var(--br2);border-radius:12px;padding:1.5rem;margin-bottom:1.2rem;max-width:720px;}
+.card h2{font-family:var(--disp);font-size:.9rem;font-weight:300;color:var(--amber2);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--br);}
+.row{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.9rem;}
+label{font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:var(--txd);}
+input,select{background:var(--glass);border:1px solid var(--br2);border-radius:var(--r);padding:.6rem .75rem;color:var(--tx);font-family:var(--mono);font-size:.65rem;outline:none;transition:border .2s;}
+input:focus,select:focus{border-color:var(--amber-d);box-shadow:0 0 0 3px var(--amber-g);}
+input::placeholder{color:var(--txm);}
+.btn{background:linear-gradient(135deg,rgba(200,132,42,.22),rgba(200,132,42,.08));border:1px solid rgba(200,132,42,.4);color:var(--amber2);font-family:var(--disp);font-size:.75rem;font-weight:300;font-style:italic;letter-spacing:.05em;padding:.6rem 1.2rem;border-radius:var(--r);cursor:pointer;transition:all .2s;}
+.btn:hover{background:rgba(200,132,42,.2);box-shadow:0 4px 20px var(--amber-d);}
+.btn-row{display:flex;gap:.6rem;margin-top:.3rem;}
+.btn-sm{background:var(--glass);border:1px solid var(--br2);color:var(--txm);font-family:var(--mono);font-size:.48rem;padding:.35rem .7rem;border-radius:5px;cursor:pointer;transition:all .18s;}
+.btn-sm:hover{color:var(--txd);border-color:var(--br3);}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:rgba(45,74,62,.92);border:1px solid rgba(45,74,62,.4);border-radius:8px;padding:.7rem 1rem;font-family:var(--mono);font-size:.52rem;color:var(--sage2);backdrop-filter:blur(12px);opacity:0;transition:opacity .35s;pointer-events:none;}
+.toast.on{opacity:1;}
+.badge{display:inline-block;font-family:var(--mono);font-size:.44rem;padding:.12rem .35rem;border-radius:3px;margin-top:.25rem;}
+.b-on{background:rgba(45,74,62,.2);color:var(--sage2);border:1px solid rgba(45,74,62,.35);}
+.b-off{background:rgba(139,58,26,.15);color:#d4815a;border:1px solid rgba(139,58,26,.25);}
+.help{font-family:var(--mono);font-size:.44rem;color:var(--txm);margin-top:.2rem;line-height:1.7;}
+.hint{font-family:var(--mono);font-size:.44rem;color:#d4815a;margin-top:.2rem;}
+.good{color:var(--sage2);}
+.bad{color:#e87070;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+.status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem;}
+.stat{background:var(--glass);border:1px solid var(--br);border-radius:var(--r);padding:.6rem;text-align:center;}
+.stat-v{font-family:var(--mono);font-size:.7rem;color:var(--amber2);}
+.stat-l{font-family:var(--mono);font-size:.44rem;color:var(--txm);margin-top:.1rem;}
+</style>
+</head>
+<body>
+<h1><em>IWAS</em> · <strong>Gateway</strong> Config</h1>
+<div class="sub">Telegram · Slack · WhatsApp · Route through Honey Badger</div>
+
+<div id="STATUS"></div>
+
+<div class="card">
+  <h2>⊕ Webhook Base URL</h2>
+  <div class="row">
+    <label>Public HTTPS URL where gateway is reachable (no trailing slash)</label>
+    <input id="WB" placeholder="https://yourdomain.com" oninput="validateWebhook(this)"/>
+    <div id="WB_HINT" class="help"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>✈ Telegram</h2>
+  <div class="row">
+    <label>Bot Token (from @BotFather)</label>
+    <input id="TG" placeholder="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"/>
+  </div>
+  <div id="TG_STATUS"></div>
+  <div class="btn-row">
+    <button class="btn-sm" onclick="setField('telegram_token')">Set</button>
+    <button class="btn-sm" onclick="tgWebhook()">Register Webhook</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>⚡ Slack</h2>
+  <div class="grid2">
+    <div class="row">
+      <label>Bot Token (xoxb-...)</label>
+      <input id="SL" placeholder="xoxb-123456789012-..." />
+    </div>
+    <div class="row">
+      <label>Signing Secret</label>
+      <input id="SS" placeholder="abcdef123456..." />
+    </div>
+  </div>
+  <div id="SL_STATUS"></div>
+  <button class="btn-sm" onclick="setSlack()">Set Both</button>
+</div>
+
+<div class="card">
+  <h2>💬 WhatsApp</h2>
+  <div class="grid2">
+    <div class="row">
+      <label>WhatsApp Token (or Twilio Auth Token)</label>
+      <input id="WA" placeholder="EAAx... or Twilio token"/>
+    </div>
+    <div class="row">
+      <label>Phone Number ID / Twilio From</label>
+      <input id="WA_PH" placeholder="123456789 or whatsapp:+1415..."/>
+    </div>
+  </div>
+  <div class="row">
+    <label>Twilio Account SID</label>
+    <input id="TW_SID" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/>
+  </div>
+  <div id="WA_STATUS"></div>
+  <button class="btn-sm" onclick="setWhatsApp()">Set</button>
+</div>
+
+<div class="card">
+  <h2>🧠 LLM Routing</h2>
+  <div class="grid2">
+    <div class="row">
+      <label>Default Provider</label>
+      <select id="PROV">
+        <option value="groq">Groq (fast, free)</option>
+        <option value="openrouter">OpenRouter</option>
+        <option value="">LiteLLM auto-detect</option>
+      </select>
+    </div>
+    <div class="row">
+      <label>Default Model</label>
+      <input id="MDL" placeholder="llama-3.3-70b-versatile" value="llama-3.3-70b-versatile"/>
+    </div>
+  </div>
+  <div class="row">
+    <label>API Key</label>
+    <input id="APIK" type="password" placeholder="sk-..."/>
+  </div>
+  <div class="row">
+    <label>System Prompt</label>
+    <input id="SYS" placeholder="You are the IWAS Gateway Agent..."/>
+  </div>
+  <div class="btn-row">
+    <button class="btn-sm" onclick="setLLM()">Set LLM Config</button>
+    <button class="btn-sm" onclick="testLLM()">Test LLM</button>
+  </div>
+  <div id="LLM_STATUS"></div>
+</div>
+
+<div id="TOAST" class="toast"></div>
+
+<script>
+const API = '/api/gateway';
+
+function toast(msg, type){
+  var t = document.getElementById('TOAST');
+  t.textContent = type==='ok'?'✓ '+msg:'✗ '+msg;
+  t.style.background = type==='ok'?'rgba(45,74,62,.92)':'rgba(139,58,26,.92)';
+  t.style.color = type==='ok'?'var(--sage2)':'#e87070';
+  t.classList.add('on');
+  setTimeout(function(){t.classList.remove('on');},3000);
+}
+
+function validateWebhook(el){
+  var v = el.value.trim();
+  var h = document.getElementById('WB_HINT');
+  if(!v){ h.innerHTML = ''; return; }
+  if(!v.startsWith('https://')) h.innerHTML = '<span class="bad">Must be HTTPS</span> — Telegram/WhatsApp require TLS';
+  else if(v.endsWith('/')) h.innerHTML = '<span class="bad">Remove trailing slash</span>';
+  else h.innerHTML = '<span class="good">✓ Valid HTTPS URL</span>';
+}
+
+async function setField(field, val){
+  var inputMap = {
+    telegram_token: 'TG', webhook_base: 'WB',
+    slack_bot_token: 'SL', slack_signing_secret: 'SS',
+    default_provider: 'PROV', default_model: 'MDL',
+    default_api_key: 'APIK', system_prompt: 'SYS',
+    whatsapp_token: 'WA', twilio_account_sid: 'TW_SID',
+  };
+  var el = document.getElementById(inputMap[field]);
+  var value = val !== undefined ? val : (el ? el.value.trim() : '');
+  if(!value && field !== 'system_prompt' && field !== 'slack_signing_secret') return;
+  var body = {};
+  body[field] = value;
+  try{
+    var r = await fetch(API+'/config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    var data = await r.json();
+    if(data.ok){ toast(field+' saved','ok'); loadConfig(); }
+    else toast(data.message || 'save failed','err');
+  } catch(e){ toast('Error: '+e.message,'err'); }
+}
+
+async function setSlack(){
+  var sl = document.getElementById('SL').value.trim();
+  var ss = document.getElementById('SS').value.trim();
+  if(!sl && !ss) return;
+  try{
+    var r = await fetch(API+'/config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({slack_bot_token:sl, slack_signing_secret:ss})});
+    var data = await r.json();
+    if(data.ok) toast('Slack config saved','ok');
+    loadConfig();
+  } catch(e){ toast('Error: '+e.message,'err'); }
+}
+
+async function setWhatsApp(){
+  var wa = document.getElementById('WA').value.trim();
+  var ph = document.getElementById('WA_PH').value.trim();
+  var sid = document.getElementById('TW_SID').value.trim();
+  try{
+    var body = {};
+    if(wa) body.whatsapp_token = wa;
+    if(ph) body.whatsapp_phone_id = ph;
+    if(sid) body.twilio_account_sid = sid;
+    var r = await fetch(API+'/config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    var data = await r.json();
+    if(data.ok) toast('WhatsApp config saved','ok');
+    loadConfig();
+  } catch(e){ toast('Error: '+e.message,'err'); }
+}
+
+async function setLLM(){
+  var prov = document.getElementById('PROV').value;
+  var mdl = document.getElementById('MDL').value.trim();
+  var apik = document.getElementById('APIK').value.trim();
+  var sys = document.getElementById('SYS').value.trim();
+  try{
+    var body = {};
+    if(prov) body.default_provider = prov;
+    if(mdl) body.default_model = mdl;
+    if(apik) body.default_api_key = apik;
+    if(sys) body.system_prompt = sys;
+    var r = await fetch(API+'/config', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    var data = await r.json();
+    if(data.ok) toast('LLM config saved','ok');
+    loadConfig();
+  } catch(e){ toast('Error: '+e.message,'err'); }
+}
+
+async function tgWebhook(){
+  try{
+    var r = await fetch(API+'/telegram/set-webhook', {method:'POST'});
+    var data = await r.json();
+    if(data.ok) toast('Telegram webhook registered: '+data.webhook_url,'ok');
+    else toast(data.detail || 'Failed','err');
+    loadConfig();
+  } catch(e){ toast('Error: '+e.message,'err'); }
+}
+
+async function testLLM(){
+  try{
+    var r = await fetch(API+'/test-llm', {method:'POST'});
+    var data = await r.json();
+    var s = document.getElementById('LLM_STATUS');
+    if(data.ok){
+      s.innerHTML = '<div class="badge b-on">✓ LLM OK: '+data.model+' ('+(data.time||'')+')</div>';
+      toast('LLM test passed','ok');
+    } else {
+      s.innerHTML = '<div class="badge b-off">✗ '+data.error+'</div>';
+      toast('LLM test failed','err');
+    }
+  } catch(e){
+    document.getElementById('LLM_STATUS').innerHTML = '<div class="badge b-off">✗ Error: '+e.message+'</div>';
+  }
+}
+
+async function loadConfig(){
+  try{
+    var r = await fetch(API+'/config');
+    var d = await r.json();
+    if(document.getElementById('WB')) document.getElementById('WB').value = d.webhook_base || '';
+    if(document.getElementById('TG')) document.getElementById('TG').value = d.telegram_token || '';
+    if(document.getElementById('SL')) document.getElementById('SL').value = d.slack_bot_token || '';
+    if(document.getElementById('SS')) document.getElementById('SS').value = '';
+    if(document.getElementById('WA')) document.getElementById('WA').value = d.whatsapp_token || '';
+    if(document.getElementById('WA_PH')) document.getElementById('WA_PH').value = d.twilio_whatsapp_from || '';
+    if(document.getElementById('TW_SID')) document.getElementById('TW_SID').value = d.twilio_account_sid || '';
+    if(document.getElementById('MDL')) document.getElementById('MDL').value = d.default_model || '';
+    if(document.getElementById('SYS')) document.getElementById('SYS').value = d.system_prompt || '';
+    if(document.getElementById('PROV')) document.getElementById('PROV').value = d.default_provider || '';
+
+    var tgStatus = d.telegram_webhook_set ? '<span class="badge b-on">✓ Bot configured</span>' : '<span class="badge b-off">✗ Not configured</span>';
+    document.getElementById('TG_STATUS').innerHTML = tgStatus;
+    document.getElementById('SL_STATUS').innerHTML = d.slack_configured ? '<span class="badge b-on">✓ Configured</span>' : '<span class="badge b-off">✗ Not configured</span>';
+    document.getElementById('WA_STATUS').innerHTML = d.whatsapp_configured ? '<span class="badge b-on">✓ Configured</span>' : '<span class="badge b-off">✗ Not configured</span>';
+
+    // Status bar
+    var statusHTML = '<div class="status-grid">'
+      +'<div class="stat"><div class="stat-v">'+(d.telegram_webhook_set?'✓':'✗')+'</div><div class="stat-l">Telegram</div></div>'
+      +'<div class="stat"><div class="stat-v">'+(d.slack_configured?'✓':'✗')+'</div><div class="stat-l">Slack</div></div>'
+      +'<div class="stat"><div class="stat-v">'+(d.whatsapp_configured?'✓':'✗')+'</div><div class="stat-l">WhatsApp</div></div>'
+      +'</div>';
+    document.getElementById('STATUS').innerHTML = statusHTML;
+  } catch(e){ console.error('load config:', e); }
+}
+
+loadConfig();
+</script>
+</body>
+</html>

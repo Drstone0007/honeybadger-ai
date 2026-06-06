@@ -117,6 +117,8 @@ from starlette.responses import JSONResponse as _JSONResponse
 REQUEST_HARD_TIMEOUT = float(os.getenv("REQUEST_HARD_TIMEOUT", "45"))
 _TIMEOUT_EXEMPT_PREFIXES = (
     "/api/chat",            # streaming
+    "/api/iwas/chat",       # IWAS proxy (waits on external LLM)
+    "/api/gateway/",        # messaging gateways wait on external LLMs
     "/api/shell/stream",    # SSE
     "/api/research",        # multi-minute jobs
     "/api/model/download",  # tmux setup may run pip installs
@@ -166,9 +168,14 @@ if AUTH_ENABLED:
         "/api/auth/integrations/presets",
         "/api/health",
         "/api/version",
+        "/api/iwas/void/state",
+        "/api/iwas/void/story",
+        "/api/iwas/void/manifesto",
+        "/api/iwas/providers",
         "/login",
+        "/iwas",
     }
-    AUTH_EXEMPT_PREFIXES = ["/static"]
+    AUTH_EXEMPT_PREFIXES = ["/static", "/api/iwas/", "/api/gateway/"]
     # Dynamic paths whose own handler proves identity via a path-embedded
     # secret instead of the session/bearer auth. The route handler at
     # routes/task_routes.py validates the per-task `webhook_token` itself
@@ -698,6 +705,63 @@ app.include_router(setup_contacts_routes())
 from companion import setup_companion_routes
 app.include_router(setup_companion_routes())
 
+# ========= v2 NEW MODULE ROUTES =========
+
+# Second Brain
+from routes.brain_routes import setup_brain_routes
+app.include_router(setup_brain_routes())
+logger.info("Second Brain routes initialized")
+
+# Pixel Agent (vision/OCR)
+from routes.pixel_routes import setup_pixel_routes
+app.include_router(setup_pixel_routes())
+logger.info("Pixel Agent routes initialized")
+
+# Seeing Agent (vision + conversation)
+from routes.seeing_routes import setup_seeing_routes
+app.include_router(setup_seeing_routes())
+logger.info("Seeing Agent routes initialized")
+
+# Mirofish Swarm
+from routes.swarm_routes import setup_swarm_routes
+app.include_router(setup_swarm_routes())
+logger.info("Mirofish Swarm routes initialized")
+
+# Git Agent
+from routes.git_routes import setup_git_routes
+app.include_router(setup_git_routes())
+logger.info("Git Agent routes initialized")
+
+# Obsidian Vault Integration
+from routes.obsidian_routes import setup_obsidian_routes
+app.include_router(setup_obsidian_routes())
+logger.info("Obsidian routes initialized")
+
+# Metaland — The World Inside
+from routes.metaland_routes import setup_metaland_routes
+app.include_router(setup_metaland_routes())
+logger.info("Metaland routes initialized")
+
+# LiteRT-LM — On-device LLM inference
+from routes.litert_lm_routes import setup_litert_lm_routes
+from services.litert_lm import service as litert_lm_service
+app.include_router(setup_litert_lm_routes(litert_lm_service))
+logger.info("LiteRT-LM routes initialized")
+
+# Free Router — Free-tier LLM provider management
+from routes.free_router_routes import setup_free_router_routes
+app.include_router(setup_free_router_routes())
+logger.info("Free Router routes initialized")
+
+# IWAS OpenClaw Voice Agent — routes through Honey Badger + The Void
+from routes.iwas_routes import setup_iwas_routes
+app.include_router(setup_iwas_routes())
+logger.info("IWAS Voice Agent routes initialized")
+
+# Messaging Gateway — Telegram, Slack, WhatsApp
+from routes.gateway_routes import setup_gateway_routes
+app.include_router(setup_gateway_routes())
+logger.info("Messaging Gateway routes initialized")
 # ========= ROUTES (kept in app.py) =========
 
 def _serve_html_with_nonce(request: Request, file_path: str) -> HTMLResponse:
@@ -759,6 +823,20 @@ async def serve_backgrounds(request: Request):
     """Sandbox page for prototyping background effects. No auth required."""
     return _serve_html_with_nonce(request, abs_join(BASE_DIR, "static/backgrounds.html"))
 
+@app.get("/metaland")
+async def serve_metaland(request: Request):
+    """Metaland — the world inside honeybadger. Cinematic AI mind showcase."""
+    return _serve_html_with_nonce(request, abs_join(BASE_DIR, "static/metaland/index.html"))
+
+@app.get("/iwas")
+async def serve_iwas(request: Request):
+    """IWAS OpenClaw Voice Agent — routes through Honey Badger + The Void."""
+    return _serve_html_with_nonce(request, abs_join(BASE_DIR, "static/iwas/index.html"))
+
+@app.get("/gateway")
+async def serve_gateway(request: Request):
+    """Gateway config UI — Telegram, Slack, WhatsApp."""
+    return _serve_html_with_nonce(request, abs_join(BASE_DIR, "static/iwas/gateway.html"))
 @app.get("/login")
 async def serve_login(request: Request):
     return _serve_html_with_nonce(request, abs_join(BASE_DIR, "static/login.html"))
