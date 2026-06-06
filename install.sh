@@ -5,10 +5,10 @@
 # ═══════════════════════════════════════════════════════════════════
 #
 #   Usage:
-#     curl -fsSL https://raw.githubusercontent.com/honeybadger-ai/honeybadger/main/install.sh | bash
+#     curl -fsSL https://raw.githubusercontent.com/Drstone0007/honeybadger-ai/main/install.sh | bash
 #
 #   Or with options:
-#     curl -fsSL https://raw.githubusercontent.com/honeybadger-ai/honeybadger/main/install.sh | bash -s -- --dir /opt/honeybadger --port 7000
+#     curl -fsSL https://raw.githubusercontent.com/Drstone0007/honeybadger-ai/main/install.sh | bash -s -- --dir /opt/honeybadger --port 7000
 #
 # ═══════════════════════════════════════════════════════════════════
 
@@ -192,10 +192,10 @@ clone_repo() {
             error "Installation cancelled"
         fi
         cd "$INSTALL_DIR"
-        git pull origin "$BRANCH"
+        git pull origin "$BRANCH" 2>/dev/null || git pull --rebase origin "$BRANCH"
         log "Updated existing installation"
     else
-        git clone --depth 1 -b "$BRANCH" https://github.com/honeybadger-ai/honeybadger.git "$INSTALL_DIR"
+        git clone --depth 1 -b "$BRANCH" https://github.com/Drstone0007/honeybadger-ai.git "$INSTALL_DIR"
         cd "$INSTALL_DIR"
         log "Cloned to $INSTALL_DIR"
     fi
